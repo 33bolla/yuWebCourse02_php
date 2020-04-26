@@ -23,12 +23,12 @@
       </div>
         <ul class="nav navbar-nav navbar-right">
           <!-- 6 -->
-          <li id="home"><a href="#">HOME</a></li>
-          <li id="about"><a href="#">ABOUT US</a></li>
-          <li id="contact"><a href="#">CONTACT US</a></li>
+          <li id="home"><a href="index.php">HOME</a></li>
+          <li id="about"><a href="about.php">ABOUT US</a></li>
+          <li id="contact"><a href="contact.php">CONTACT US</a></li>
         </ul>
     </div>
   </nav>
-
+</head>
   <body>
-    <div class="container">
+    <div class="container"> <!--main container for web page; closing on footer-->
