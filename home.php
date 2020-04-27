@@ -26,6 +26,7 @@
             array_push($posts, $post);
             
             //storing posts array
+            //$_SESSION['posts'] = []; //reset (eliminates) all posts
             $_SESSION['posts'] = $posts; //store all post on $_session --works
             $postsLen=count($posts); 
             $_SESSION['postsLen']=$postsLen;
@@ -36,10 +37,16 @@
 
 
 ?>
-
+<!-- this home welcome title is rendered 
+with mustaches in main-js.php file-->
 <h1>you in Home</h1>
 <div id="myHomePanel"></div>
 
+<!-- posts list  is rendered 
+with mustaches in a for each loop in js section of this script
+-->
+<h1 id="postTitle"> </h1>
+<p id="postBody"></p>
 
 <script>
     $(document).ready(function(){
@@ -72,9 +79,9 @@
         <?php 
             foreach ($posts as $post) {
         ?> 
-                //console.log("<?php echo $post['title'];?>"); 
-                posts.push({'title':"<?php echo $post['title'];?>",'body':"<?php echo $post['title'];?>"});
-                //console.log(posts);
+                //OCIO NONACCETTA RETURN NELLA TEXT AREA!!! 
+                posts.push({'title':"<?php echo $post['title'];?>", 'body':"<?php echo $post['body'];?>"});
+                
         <?php
                 
             }
@@ -84,26 +91,48 @@
         showPosts(posts);       
         console.log('ciao');
     });        
+    
     function showPosts(posts){   
-        //showing posts with mustaches         
-        var template = "{{ content }}";
-        var text="";
+        //showing posts with mustaches and js dom manipulation        
+        
+        //settings
+        var template = "{{ content }}"; // defining a template for mustaches
+        var outputText="";
         var postContent={};
+        var titleItem;
+        var bodyItem;
+        
+        //posts in reverse order
+        
+        
         for (const post of posts) {
             console.log(post);
             
             /* using dom object model as in
             https://stackoverflow.com/questions/31057247/insert-html-code-in-javascript
-            i.e. you have to generate new nodes in document!
-            quite different from ejs ...
-            <h1 id="postTitle"> </h1>
-            <p id="postBody"></p>
-            */ 
+            https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement
             
-            postTitle={content:post["title"]};
-            text = Mustache.render(template, postTitle);
-            $("#postTitle").html(text);
-            $("#postBody").html('cipperimerlo');
+            
+            var postTitle={content:post["title"]}; // matching with template
+            var postBody={content:post["body"]};
+            var outputTitleText = Mustache.render(template, postTitle); // this is the render html from mustache!
+            var outputBodyText = Mustache.render(template, postBody);
+            
+            //creating and filling new DOM elements
+            titleItem = document.createElement("h1");   
+            bodyItem = document.createElement("p"); 
+            titleItem.innerHTML = outputTitleText;   
+            bodyItem.innerHTML = outputBodyText;                 
+            
+            //positioning (appending) new elements on DOM
+            document.body.appendChild(titleItem);  
+            document.body.appendChild(bodyItem); 
+                         
+            // alternative: using jquery to fill elements
+            // $("#postTitle").html(outputTitleText);
+            // $("#postBody").html(outputBodyText);
+        
+        
         } 
     
         
