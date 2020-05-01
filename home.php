@@ -48,6 +48,13 @@ with mustaches in a for each loop in js section of this script
 <h1 id="postTitle"> </h1>
 <p id="postBody"></p>
 
+
+<!-- adding command buttons  with awesome icon-->
+<button type="button" class="btn btn-primary" onclick="location.href='compose.php'"><i class="fas fa-bookmark"></i>compose</button>
+<button type="button" class="btn btn-secondary" onclick="location.href='index.php'"><i class="fas fa-backward"></i>home</button>
+
+
+
 <script>
     $(document).ready(function(){
         //getting $posts elements from sessions
