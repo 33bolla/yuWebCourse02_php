@@ -83,77 +83,11 @@ function findingPostBody($postTitle){
     var post={};
     post["title"]="<?php echo $_SESSION["currentPost"]["title"];?>";
     post["body"]="<?php echo $_SESSION["currentPost"]["body"];?>";
-    console.log(post);    
+
 
     //rendering post content on page with oop+Mustache
-    let myMustachePost1= new MustachePostItem('contenuto', post['title'], post['body']);
-    let postRendered=myMustachePost1.render();
-
-    
-    //setting variables
-    //settings
-    var template = "{{ content }}"; // defining a template for mustaches
-    var outputText="";
-    var postContent={};
-    var titleItem;
-    var bodyItem;
-
-    
-    
-   
-    
-
-
-    //creating js objects  to work with mustache
-    var postTitle={content:post["title"]}; // 'content' key matching with template
-    var postBody={content:post["body"]};
-    
-    console.log ('oggetti JS postTitle e postBody');
-    console.log(postTitle);
-    console.log(postBody);
-
-    //rendering variables with mustache
-    var outputTitleText = Mustache.render(template, postTitle); // this is the render html from mustache!
-    var outputBodyText = Mustache.render(template, postBody);
-    console.log('testing Mustache form script');
-    console.log(outputTitleText);
-    console.log(outputBodyText);
-    
-    //creating and filling new DOM elements
-    titleItem = document.createElement("h1");   
-    var bodyItem = document.createElement("p"); 
-    
-    titleItem.innerHTML = outputTitleText;   
-    bodyItem.innerHTML = outputBodyText; 
-    
-    
-    //positioning (appending)  elements on DOM
-    document.body.appendChild(titleItem);  
-    document.body.appendChild(bodyItem); 
-    
-    /* OOP WAY*/
-    //testing classes building blocks
-    let myPost= new PostItem();
-    myPost.showPost(titleItem, bodyItem);
-
-    //using Mustache on new DOM element
-    // var titleOop=document.createElement("h1");
-    // var bodyOop=document.createElement("p");
-
-   
-    // devo inviare le variabili non renderizzate da Mustache!!
-    let myMustachePost= new MustachePostItem('contenuto', post['title'], post['body']);
-    let postRendered1=myMustachePost.render();
-    // let titleRendered=postRendered['title'];
-    // let bodyRendered=postRendered['body'];
-    // console.log('form caller:  '+titleRendered);
-    // console.log('form caller2:  '+bodyRendered);
-    
-    // titleOop.innerHTML='ciao'+titleRendered;
-    // bodyOop.innerHTML='bau'+bodyRendered;
-    // document.body.appendChild(titleOop); 
-    // document.body.appendChild(bodyOop); 
-
+    let myMustachePost= new MustachePostItem(post['title'], post['body']);
+    let postRendered=myMustachePost.render();
 
 });
 

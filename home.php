@@ -15,6 +15,7 @@
             //showing page framework
             include ('header.php');
             include ('footer.php');
+            include ('classes/jsClass.php');
 
             //get data from form
             $pTitle=$_POST["pTitle"];
@@ -39,21 +40,22 @@
 ?>
 <!-- this home welcome title is rendered 
 with mustaches in main-js.php file-->
-<h1>you in Home</h1>
-<div id="myHomePanel"></div>
 
-<!-- posts list  is rendered 
-with mustaches in a for each loop in js section of this script
--->
-<h1 id="postTitle"> </h1>
-<p id="postBody"></p>
+<div class= 'container' id="mainDiv">
+    <h1>you in Home</h1>
+    <div id="myHomePanel"></div>
+    
+    <!-- adding command buttons  with awesome icon-->
+    <button type="button" class="btn btn-primary" onclick="location.href='compose.php'"><i class="fas fa-bookmark"></i>compose</button>
+    <button type="button" class="btn btn-info" onclick="location.href='index.php'"><i class="fas fa-backward"></i>home</button>
+    
+    <!-- posts list  is rendered 
+    with mustaches in a for each loop in js section of this script
+    -->
+    <h1 id="postTitle"> </h1>
+    <p id="postBody"></p>
 
-
-<!-- adding command buttons  with awesome icon-->
-<button type="button" class="btn btn-primary" onclick="location.href='compose.php'"><i class="fas fa-bookmark"></i>compose</button>
-<button type="button" class="btn btn-secondary" onclick="location.href='index.php'"><i class="fas fa-backward"></i>home</button>
-
-
+</div>
 
 <script>
     $(document).ready(function(){
@@ -98,82 +100,22 @@ with mustaches in a for each loop in js section of this script
     });        
     
     function showPosts(posts){   
-        //showing posts with mustaches and js dom manipulation        
-        console.log('in show posts now!');
-        //settings
-        var template = "{{ content }}"; // defining a template for mustaches
-        var outputText="";
-        var postContent={};
-        var titleItem;
-        var bodyItem;
-        
         //posts in reverse order
         posts.reverse();
-        
+        console.log('in oop area ');
         for (const post of posts) {
-            console.log(post);
-            
-            /* using dom object model as in
-            https://stackoverflow.com/questions/31057247/insert-html-code-in-javascript
-            https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement
-            */
-            //creating js obj to work with mustache
-            var postTitle={content:post["title"]}; // 'content' key matching with template
-            var postBody={content:post["body"]};
-            
-            //editing post['body'] in order to truncate and link last char to postPage processing
-            var strLen=20;
-            var postBodyStrTrunc = post["body"].substring(0,strLen);
-            postBodyTrunc= {content:postBodyStrTrunc+"......"};
 
-            
-            //rendering variables with mustache
-            var outputTitleText = Mustache.render(template, postTitle); // this is the render html from mustache!
-            var outputBodyText = Mustache.render(template, postBody);
-            var outputBodyTruncText = Mustache.render(template, postBodyTrunc);
-            
-            //creating and filling new DOM elements
-            var titleItem = document.createElement("h1");   
-            var bodyItem = document.createElement("p"); 
-            var bodyTruncItem=document.createElement("a");
-            titleItem.innerHTML = outputTitleText;   
-            bodyItem.innerHTML = outputBodyText; 
-            bodyTruncItem.innerHTML = outputBodyTruncText;                 
-            
-            //creating pathways on truncated elements
-            var postPath="postPage.php";
-            var qryStr="?selectedPostTitle="+post["title"];
-            console.log (qryStr);
-            
-            postPath=postPath+qryStr;
-            console.log(postPath);
-            console.log(postTitle);
-            bodyTruncItem.setAttribute("href", postPath); //setting attribute
-            bodyTruncItem.innerHTML=outputBodyTruncText;
-            
-            
-            //positioning (appending)  elements on DOM
-            document.body.appendChild(titleItem);  
-            document.body.appendChild(bodyItem); 
-            document.body.appendChild(bodyTruncItem); 
-                         
-            // alternative: using jquery to fill elements
-            // $("#postTitle").html(outputTitleText);
-            // $("#postBody").html(outputBodyText);
-        
-            
-            
-            //creating pathways
 
-            //open postPage when click on dots
-        } 
-    
-        
-        // var text = Mustache.render(template, homeStartingContent); 
-    
+            //editing post['body] in order to obtain a truncate string of fixed length
+            let strLen1=20;
+            let post_body=post["body"].substring(0,strLen1);
+            post_body=post_body+".........";
+            
+            //rendering on home page
+            let myMustachePost= new MustachePostItem(post['title'], post_body);
+            let postRendered=myMustachePost.renderPosts();
+        }
     }
-
-
 </script>
 
 
